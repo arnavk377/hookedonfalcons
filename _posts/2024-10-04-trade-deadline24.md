@@ -7,7 +7,7 @@ categories: Roster
 
 With the trade deadline less than 24 hours away and the Falcons hoping to make a deep playoff run, the time before 4 pm on Tuesday could have a substantial impact on the Falcons season.
 
-![Azeez Ojulari](/assets/images/ojulari.jpg)
+![Azeez Ojulari](../assets/images/ojulari.jpg)
 
 ### Capital
 To review, the Falcons have the following draft picks as of November 4th:

@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+h1 {
+    text-align: center;
+    color: #444;
+}
+
+#play-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.play-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.play-card h2 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #007bff;
+}
+
+.play-card p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.play-card .description {
+    font-style: italic;
+    color: #555;
+}
+
+.play-card a {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.play-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+}

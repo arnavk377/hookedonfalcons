@@ -1,0 +1,28 @@
+---
+layout: post
+---
+
+<link rel="stylesheet" href = "https://arnavk377.github.io/hookedonfalcons/css/analysis.css">
+<script src="https://arnavk377.github.io/hookedonfalcons/js/template.js"></script>
+
+<div class="content-box">
+    {{ content }}
+</div>
+
+<div class="play-box">
+  <h1>Play-by-Play Information</h1>
+  <div id="play-container"></div>
+  <script>
+    const wk_num = "{{ page.weekNumber }}";
+    fetch(`https://arnavk377.github.io/hookedonfalcons/assets/gamedata/week${wk_num}.json`)
+    .then(response => {
+      if (!response.ok) { throw new Error('Network response was not ok ' + response.statusText); }
+      return response.json();
+    })
+    .then(data => displayPlays(data, wk_num))
+    .catch(error => {
+      document.getElementById("play-container").innerHTML = `<p>Error loading data: ${error.message}</p>`;
+      console.error('Error fetching the JSON data:', error);
+    });
+  </script>
+</div>

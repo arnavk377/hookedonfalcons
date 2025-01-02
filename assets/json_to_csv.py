@@ -63,6 +63,15 @@ def turnover_sack(row):
             turnover = 0
     return pd.Series({'sack': sack, 'turnover': turnover})
 
+def o_play_type(row):
+    """Returns whether the play was a pass or run, given that it was an offensive play"""
+    if 'Pass' in row['playType']:
+        return 'Pass'
+    elif 'Run' in row['playType']:
+        return 'Run'
+    else:
+        return np.nan
+
 def json_to_csv(json_file, csv_file, opposing_team):
     """Tidies and converts a json file to a csv file"""
     df = pd.read_json(json_file)
@@ -75,6 +84,8 @@ def json_to_csv(json_file, csv_file, opposing_team):
     df[['penalty', 'pen_offender', 'net_yards']] = df.apply(penalty, axis=1, args=(opposing_team,))
     # extracts turnover and sack stats
     df[['sack', 'turnover']] = df.apply(turnover_sack, axis=1)
+    # simplifies offensive play type into 1 of 2 buckets, Pass or Run
+    df['offensive_play_choice'] = df.apply(o_play_type, axis=1)
     # drops columns to shorten length of csv file
     new_df = df.drop(columns=['details', 'description'])
     new_df.to_csv(csv_file)

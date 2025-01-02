@@ -76,5 +76,5 @@ def json_to_csv(json_file, csv_file, opposing_team):
     # extracts turnover and sack stats
     df[['sack', 'turnover']] = df.apply(turnover_sack, axis=1)
     # drops columns to shorten length of csv file
-    new_df = df.drop(columns=['details', 'description'], inplace=True)
+    new_df = df.drop(columns=['details', 'description'])
     new_df.to_csv(csv_file)

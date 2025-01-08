@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 import re
 
+def whitespace_removal(value):
+    """Removes leading and trailing whitespace from a string"""
+    return value.strip() if isinstance(value, str) else value 
+
 def extract_yards_gained(row):
     """Returns the number of yards gained on a play"""
     match = re.search(r'for (\d+) yard', row['details'])
@@ -65,12 +69,12 @@ def turnover_sack(row):
 
 def o_play_type(row):
     """Returns whether the play was a pass or run, given that it was an offensive play"""
-    if 'Pass' in row['playType']:
-        return 'Pass'
-    elif 'Run' in row['playType']:
-        return 'Run'
-    else:
-        return np.nan
+    if isinstance(row['playType'], str):
+        if 'Pass' in row['playType']:
+            return 'Pass'
+        elif 'Run' in row['playType']:
+            return 'Run'
+    return np.nan
 
 def json_to_csv(json_file, csv_file, opposing_team):
     """Tidies and converts a json file to a csv file"""
@@ -78,6 +82,7 @@ def json_to_csv(json_file, csv_file, opposing_team):
     # replaces all null/semi-null values with np.nan
     for i in df.columns:
         df[i].replace({'': np.nan, None: np.nan, 'None': np.nan}, inplace=True)
+    df = df.applymap(whitespace_removal)
     # extracts the number of yards gained on a play
     df['net_yards'] = df.apply(extract_yards_gained, axis=1)
     # extracts penalty related stats

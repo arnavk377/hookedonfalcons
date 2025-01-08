@@ -850,6 +850,22 @@
     {
         "possession": "D",
         "down": 2,
+        "yardage": 8,
+        "position": 47,
+        "time": "5:39",
+        "quarter": 2,
+        "details": "PENALTY on PIT-V.Jefferson, False Start, 5 yards, enforced at PIT 47 - No Play.",
+        "playType": "Run",
+        "personnel": "4-2 Nickel",
+        "opponent_personnel": 11,
+        "pre-formation": "Cover 3",
+        "post-formation": "",
+        "motion": "",
+        "description": "This was actually a very interesting play by the Steelers, as it was a play action, where Fields faked the handoff. However, he was headed to his right, but he was able to get back to the right thanks to a great block by Warren."
+    },
+    {
+        "possession": "D",
+        "down": 2,
         "yardage": 13,
         "position": 42,
         "time": "5:31",

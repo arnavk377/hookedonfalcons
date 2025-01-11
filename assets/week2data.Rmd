@@ -1,0 +1,93 @@
+---
+title: "Integrating Week 1 Data with NFL Fast R Data"
+output: pdf_document
+date: "2025-01-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries}
+library(tidyverse)
+library(nflfastR)
+library(jsonlite)
+```
+
+```{r}
+fastRdata <- build_nflfastR_pbp(c("2024_02_ATL_PHI"))
+fastRdata
+```
+
+```{r}
+red_fastRdata <- fastRdata %>% slice(-c(1, n()))
+```
+
+```{r}
+reduce_fastR_df <- function(df) {
+  df <- df %>% filter(timeout == 0)
+  df <- df %>% filter(quarter_end == 0)
+  df <- df %>% 
+    select(game_half, posteam, qtr, down, time, yrdln, ydstogo, yards_gained, desc, play_type, shotgun, no_huddle, pass_length, pass_location, run_location, run_gap, field_goal_result, kick_distance, extra_point_result, two_point_conv_result, timeout_team, td_team, posteam_timeouts_remaining, defteam_timeouts_remaining, half_seconds_remaining, game_seconds_remaining,return_yards, penalty_team, safety, fumble_lost, interception, sack, penalty_player_name, success, pass, rush, aborted_play, total_home_score, total_away_score,
+         posteam_score, defteam_score, score_differential)
+  return(df)
+}
+```
+
+```{r}
+red_fastRdata <- reduce_fastR_df(red_fastRdata)
+```
+
+```{r}
+dim(red_fastRdata)
+# missing play in fastRdata is encroachment penalty
+# PHI Possession Qtr 4 Time 2:00
+# Encroachment on K. Street
+```
+
+```{r}
+my_work <- fromJSON("./gamedata/week2.json")
+```
+
+```{r}
+my_work <- my_work %>% 
+  filter(details != "Penalty on ATL-K.Street, Encroachment, declined.")
+# Remove a line not in fastR data, most likely since penalty was declined
+# Penalty on ATL-K.Street, Encroachment, declined.
+```
+
+```{r}
+red_my_work <- my_work %>% 
+  select(personnel, opponent_personnel, `pre-formation`, `post-formation`, motion, description)
+red_my_work
+```
+
+```{r}
+red_fastRdata <- as.data.frame(red_fastRdata)
+result <- cbind(red_fastRdata, red_my_work)
+result
+```
+
+```{r}
+# function to transform a few column values 
+convert_full_df_to_csv <- function(df, opponent) {
+  # converting yrdln value to be -50 to 50
+  # negative values represent ATL territory
+  # positive values represent opponent territory
+  df$yrdln <- ifelse(str_starts(df$yrdln, "MID "), 50, df$yrdln)
+  df$yrdln <- ifelse(str_starts(df$yrdln, "ATL"), -as.numeric(str_remove(df$yrdln, "ATL")), df$yrdln)
+  df$yrdln <- ifelse(str_starts(df$yrdln, opponent), as.numeric(str_remove(df$yrdln, opponent)), df$yrdln)
+  # making penalty team 1 and 0
+  df$penalty_team <- ifelse(df$penalty_team == "ATL", 1, df$penalty_team)
+  df$penalty_team <- ifelse(df$penalty_team == opponent, 0, df$penalty_team)
+  # reducing unneeded columns for data analysis
+  x <- subset(df, select = -c(desc, description))
+  # convert the df to csv
+  write.csv(x, "./gamedata/week2.csv", row.names = FALSE)
+}
+```
+
+```{r}
+convert_full_df_to_csv(result, "PHI")
+```
+

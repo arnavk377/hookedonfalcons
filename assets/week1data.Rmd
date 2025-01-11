@@ -1,0 +1,92 @@
+---
+title: "Integrating Week 1 Data with NFL Fast R Data"
+author: ""
+date: "2025-01-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries}
+library(tidyverse)
+library(nflfastR)
+library(jsonlite)
+```
+
+```{r}
+# getting the data from nflfastR for the PIT ATL game
+data_tible <- build_nflfastR_pbp(c("2024_01_PIT_ATL"))
+```
+
+```{r}
+# reading all the columns of the data
+names(data_tible)
+```
+
+```{r}
+# reading in data which was manually logged
+my_work <- fromJSON("./gamedata/week1.json")
+my_work
+```
+
+```{r}
+# trim the df, remove the start and end game
+data_tible <- data_tible %>% slice(-c(1, n()))
+```
+
+
+```{r}
+red_game_data <- data_tible %>% filter(timeout == 0)
+red_game_data <- red_game_data %>% 
+  filter(quarter_end == 0)
+red_game_data <- red_game_data %>% 
+  select(game_half, posteam, qtr, down, time, yrdln, ydstogo, yards_gained, desc, play_type, shotgun, no_huddle, pass_length, pass_location, run_location, run_gap, field_goal_result, kick_distance, extra_point_result, two_point_conv_result, timeout_team, td_team, posteam_timeouts_remaining, defteam_timeouts_remaining, half_seconds_remaining, game_seconds_remaining,return_yards, penalty_team, safety, fumble_lost, interception, sack, penalty_player_name, success, pass, rush, aborted_play, total_home_score, total_away_score,
+         posteam_score, defteam_score, score_differential)
+red_game_data
+
+# Plays where nothing happens:
+# Timeouts: 10
+# when quarter_end == 1: 3
+# start and end game: 2(removed with the trim)
+```
+
+```{r}
+# reducing dimensions of my_work df 
+red_my_work <- my_work %>% 
+  select(personnel, opponent_personnel, `pre-formation`, `post-formation`, motion, description)
+red_my_work
+```
+
+```{r}
+# reducing dimensions of game data df 
+red_game_data_df <- as.data.frame(red_game_data)
+result <- cbind(red_game_data_df, red_my_work)
+result
+```
+
+
+```{r}
+# function to transform a few column values 
+convert_full_df_to_csv <- function(df, opponent) {
+  # converting yrdln value to be -50 to 50
+  # negative values represent ATL territory
+  # positive values represent opponent territory
+  df$yrdln <- ifelse(str_starts(df$yrdln, "MID "), 50, df$yrdln)
+  df$yrdln <- ifelse(str_starts(df$yrdln, "ATL"), -as.numeric(str_remove(df$yrdln, "ATL")), df$yrdln)
+  df$yrdln <- ifelse(str_starts(df$yrdln, opponent), as.numeric(str_remove(df$yrdln, opponent)), df$yrdln)
+  # making penalty team 1 and 0
+  df$penalty_team <- ifelse(df$penalty_team == "ATL", 1, df$penalty_team)
+  df$penalty_team <- ifelse(df$penalty_team == opponent, 0, df$penalty_team)
+  # reducing unneeded columns for data analysis
+  x <- subset(df, select = -c(desc, description))
+  # convert the df to csv
+  write.csv(x, "./gamedata/week1.csv", row.names = FALSE)
+}
+```
+
+```{r}
+convert_full_df_to_csv(result, "PIT")
+```
+

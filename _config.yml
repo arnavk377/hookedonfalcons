@@ -93,14 +93,14 @@ social:
   - name: GitHub
     icon: github
     username: 
-    url: 
+    url: https://github.com/arnavk377
     desc: 
     share: false
 
   - name: LinkedIn
     icon: linkedin
     username: 
-    url: 
+    url: https://www.linkedin.com/in/arnav-kanekar-a108b2279/
     desc: 
     share: true
 

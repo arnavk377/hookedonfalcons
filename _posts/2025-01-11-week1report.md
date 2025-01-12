@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Week 1 Summary"
+title:  "Week 1 Report"
 date:   2025-01-11
-categories: Summary
+categories: Report
 ---
 
 ## Reflection

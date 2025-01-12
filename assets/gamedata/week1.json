@@ -317,7 +317,7 @@
         "pre-formation": "Cover 4",
         "post-formation": "",
         "motion": "88 Friermuth",
-        "description": "The defense appears to show a Cover 4 look, with Terrel shading inside right before the ball is snapped. However, there is another fumbled snap on this play. Terrel was also free and may have seen Harris receive the pitch, but he was frozen in place."
+        "description": "The defense appears to show a Cover 4 look, with Terrell shading inside right before the ball is snapped. However, there is another fumbled snap on this play. Terrell was also free and may have seen Harris receive the pitch, but he was frozen in place."
     },
     {
         "possession": "D",
@@ -1093,7 +1093,7 @@
         "yardage": null,
         "position": null,
         "time": "",
-        "quarter": null,
+        "quarter": 2,
         "details": "Y.Koo extra point is GOOD, Center-L.McCullough, Holder-B.Pinion.",
         "playType": "Extra Point",
         "personnel": "Field Goal XP",
@@ -1557,7 +1557,7 @@
         "yardage": 12,
         "position": -28,
         "time": "6:32",
-        "quarter": null,
+        "quarter": 3,
         "details": "K.Cousins sacked at ATL 19 for -9 yards (T.Watt). FUMBLES (T.Watt) [T.Watt], recovered by ATL-K.McGary at ATL 19. K.McGary to ATL 18 for -1 yards. PENALTY on PIT-D.Jackson, Illegal Use of Hands, 5 yards, enforced at ATL 28 - No Play.",
         "playType": "Pass",
         "personnel": 11,

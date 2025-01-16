@@ -14,6 +14,8 @@ function displayPlays(playData, weekNo) {
         <p><strong>Time:</strong> ${play.time}</p>
         <p><strong>Possession:</strong> ${play.possession}</p>
         <p><strong>Position:</strong> ${play.position > 0 ? `+${play.position}` : play.position}</p>
+        <p><strong>Down:</strong> ${play.down}</p>
+        <p><strong>Yards to Go:</strong> ${play.yardage}</p>
         <p><strong>Play Type:</strong> ${play.playType}</p>
         <p><strong>Details:</strong> ${play.details}</p>
         <p><strong>Description:</strong> ${play.description}</p>
